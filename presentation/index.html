@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spooky Scary Security: The IoT Nightmare</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/theme/black.css">
+    <style>
+:root {
+    --r-background-color: #1a0a2e;
+    --r-main-font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --r-heading-color: #ff6b35;
+    --r-link-color: #ffa500;
+    --r-selection-background-color: #ff6b35;
+}
+
+body {
+    background: linear-gradient(135deg, #1a0a2e 0%, #0f0514 100%), url('haunted-house-iot.png');
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    background-blend-mode: normal, overlay;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('haunted-house-iot.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.reveal {
+    background: transparent;
+}
+
+.reveal .slides {
+    text-align: center;
+    z-index: 1;
+}
+
+.reveal .slides section {
+    background: rgba(20, 5, 30, 0.94);
+    border: 3px solid #ff6b35;
+    border-radius: 20px;
+    box-shadow: 0 0 60px rgba(255, 107, 53, 0.3), 0 0 100px rgba(138, 43, 226, 0.2);
+    backdrop-filter: blur(5px);
+    padding: 30px !important;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: auto;
+}
+
+.reveal h1 {
+    color: #ff6b35;
+    text-shadow: 0 0 20px rgba(255, 107, 53, 0.5), 0 0 40px rgba(255, 107, 53, 0.3);
+    font-size: 2.2em;
+    margin: 0 0 0.3em 0;
+}
+
+.reveal h2 {
+    color: #ffa500;
+    text-shadow: 0 0 15px rgba(255, 165, 0, 0.4);
+    font-size: 1.6em;
+    margin: 0 0 0.3em 0;
+}
+
+.reveal h3 {
+    color: #ff8c42;
+    text-shadow: 0 0 10px rgba(255, 140, 66, 0.3);
+    font-size: 1.1em;
+    margin: 15px 0 10px 0;
+}
+
+.reveal p, .reveal li {
+    font-size: 0.85em;
+    line-height: 1.4;
+    margin: 8px 0;
+}
+
+.reveal ul {
+    margin-left: 20px;
+}
+
+.highlight {
+    color: #ff6b35;
+    font-weight: bold;
+}
+
+.code-block {
+    background: rgba(0, 0, 0, 0.5);
+    border-left: 4px solid #ff6b35;
+    padding: 12px;
+    margin: 12px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.7em;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.stat-box {
+    background: rgba(255, 107, 53, 0.1);
+    border: 2px solid #ff6b35;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2em;
+    color: #ff6b35;
+    font-weight: bold;
+}
+
+.warning {
+    background: rgba(255, 0, 0, 0.2);
+    border: 2px solid #ff0000;
+    padding: 12px;
+    border-radius: 10px;
+    margin: 12px 0;
+}
+
+.skull {
+    font-size: 1.5em;
+    display: inline-block;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.list-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 12px 0;
+    text-align: left;
+}
+
+.reveal .controls {
+    color: #ff6b35;
+}
+
+.reveal .progress {
+    color: #ff6b35;
+}
+
+.reveal .slide-number {
+    color: #ff6b35;
+}
+
+.scale-control {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    background: rgba(20, 5, 30, 0.95);
+    border: 2px solid #ff6b35;
+    border-radius: 10px;
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+}
+
+.scale-control label {
+    color: #ff6b35;
+    font-size: 0.9em;
+    font-weight: bold;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+.scale-slider {
+    writing-mode: bt-lr;
+    -webkit-appearance: slider-vertical;
+    width: 8px;
+    height: 150px;
+    background: rgba(255, 107, 53, 0.2);
+    outline: none;
+    border-radius: 5px;
+}
+
+.scale-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #ff6b35;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+}
+
+.scale-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #ff6b35;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+}
+
+.scale-value {
+    color: #ffa500;
+    font-size: 0.85em;
+    font-weight: bold;
+}
+
+.device-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.device-item {
+    background: rgba(255, 107, 53, 0.1);
+    border: 2px solid #ff6b35;
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.device-icon {
+    font-size: 2.2em;
+    margin-bottom: 5px;
+}
+    </style>
+</head>
+<body>
+    <div class="scale-control">
+        <label for="scaleSlider">SCALE</label>
+        <input type="range" id="scaleSlider" class="scale-slider" min="50" max="175" value="85" orient="vertical">
+        <div class="scale-value" id="scaleValue">85%</div>
+    </div>
+
+    <div class="reveal">
+        <div class="slides">
+            <section>
+    <h1>🎃 Spooky Scary Security 🎃</h1>
+    <h2>The Call is Coming from Inside the House (Network)</h2>
+    <div class="stats">
+        <div class="stat-box">
+            <div class="stat-number">14.4B</div>
+            <div>IoT Devices Today</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">29B</div>
+            <div>Projected by 2030</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">???</div>
+            <div>Devices on Your Network</div>
+        </div>
+    </div>
+    <p style="font-size: 1.2em; margin-top: 40px;">Your smart devices are watching, listening, and talking...</p>
+    <p class="highlight" style="font-size: 1.4em; margin-top: 20px;">Most homeowners have NO IDEA what's on their network</p>
+</section>
+
+            <section>
+    <h2>⚰️ The Graveyard: Tales from the Crypts ⚰️</h2>
+    <h3>When IoT Devices Claimed Their Victims</h3>
+    <div style="font-size: 1em; text-align: left;">
+        <p><strong>1. Target (2013)</strong> - 40 million credit cards stolen</p>
+        <p style="margin-left: 40px;">Entry point: HVAC vendor's cursed credentials</p>
+        
+        <p style="margin-top: 20px;"><strong>2. Casino Fish Tank (2017)</strong> - High-roller database stolen</p>
+        <p style="margin-left: 40px;">Entry point: Smart aquarium's dark ritual</p>
+        
+        <p style="margin-top: 20px;"><strong>3. St. Jude Pacemakers (2017)</strong> - 465,000 devices recalled</p>
+        <p style="margin-left: 40px;">Vulnerability: Remote possession of implanted devices</p>
+        
+        <p style="margin-top: 20px;"><strong>4. Verkada (2021)</strong> - 150,000 security cameras hacked</p>
+        <p style="margin-left: 40px;">Necromancers used hardcoded admin credentials</p>
+    </div>
+    <p class="highlight" style="font-size: 1.4em; margin-top: 30px;">Pattern: The weakest device becomes the gateway to hell</p>
+</section>
+
+            <section>
+    <h2>⚰️ Tomb #1: Target Breach (2013) 🎯</h2>
+    <h3>The $18.5 Million HVAC Curse</h3>
+    <div class="stats">
+        <div class="stat-box">
+            <div class="stat-number">40M</div>
+            <div>Credit Cards Stolen</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">70M</div>
+            <div>Personal Records</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">$18.5M</div>
+            <div>Settlement Cost</div>
+        </div>
+    </div>
+    <h3>The Attack Chain:</h3>
+    <ul>
+        <li><strong>Entry Point:</strong> Fazio Mechanical Services (HVAC contractor)</li>
+        <li><strong>Vector:</strong> Stolen vendor credentials for network access</li>
+        <li><strong>Lateral Movement:</strong> Moved from vendor access to point-of-sale systems</li>
+        <li><strong>Payload:</strong> Malware installed during 2013 holiday shopping season</li>
+        <li><strong>Impact:</strong> CEO resigned, brand reputation damaged</li>
+    </ul>
+    <p class="warning"><strong>Lesson:</strong> Your security is only as strong as your weakest third-party vendor. Supply-chain risk is real.</p>
+</section>
+
+            <section>
+    <h2>⚰️ Tomb #2: Casino Fish Tank (2017) 🐟</h2>
+    <h3>When Your Aquarium Betrays You</h3>
+    <div class="code-block">
+Attack Vector: Internet-connected aquarium thermometer<br>
+Location: Luxury casino lobby<br>
+Target: High-roller customer database<br>
+Exfiltration: Through the thermostat to cloud storage<br>
+<span class="highlight">Detection: Darktrace AI noticed unusual data flow</span>
+    </div>
+    <h3>How It Happened:</h3>
+    <ul>
+        <li>Smart thermostat had vulnerability in firmware</li>
+        <li>Device connected to main casino network (no segmentation)</li>
+        <li>Attackers exploited IoT device as entry point</li>
+        <li>Accessed database and exfiltrated via same device</li>
+        <li>Data sent "up to the cloud" through thermostat's connection</li>
+    </ul>
+    <p class="warning"><strong>Lesson:</strong> Even a $50 fish tank thermometer can compromise a multi-million dollar casino. IoT devices expand your attack surface exponentially.</p>
+</section>
+
+            <section>
+    <h2>⚰️ Tomb #3: St. Jude Pacemakers (2017) 💔</h2>
+    <h3>When Medical Devices Have Backdoors</h3>
+    <div class="stats">
+        <div class="stat-box">
+            <div class="stat-number">465,000</div>
+            <div>Devices Recalled</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">0</div>
+            <div>Reported Attacks</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">FDA</div>
+            <div>Issued Recall</div>
+        </div>
+    </div>
+    <h3>The Vulnerability:</h3>
+    <ul>
+        <li><strong>Device:</strong> Implanted cardiac pacemakers (St. Jude/Abbott)</li>
+        <li><strong>Flaw:</strong> Wireless RF telemetry could be hijacked</li>
+        <li><strong>Threat:</strong> Unauthorized reprogramming in close proximity</li>
+        <li><strong>Potential Impact:</strong> Rapid battery depletion or altered pacing shocks</li>
+        <li><strong>Fix:</strong> Firmware update (required doctor visit)</li>
+    </ul>
+    <p class="highlight" style="font-size: 1.2em;">First-ever FDA recall of medical devices for cybersecurity vulnerabilities</p>
+    <p class="warning"><strong>Lesson:</strong> Life-critical IoT devices can have life-threatening vulnerabilities. Medical IoT security is literally life-or-death.</p>
+</section>
+
+            <section>
+    <h2>⚰️ Tomb #4: Verkada Cameras (2021) 📹</h2>
+    <h3>When Your Security System Isn't Secure</h3>
+    <div class="stats">
+        <div class="stat-box">
+            <div class="stat-number">150,000</div>
+            <div>Cameras Compromised</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">Live</div>
+            <div>Video Feeds Exposed</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">March 2021</div>
+            <div>Breach Discovered</div>
+        </div>
+    </div>
+    <h3>High-Profile Victims:</h3>
+    <ul>
+        <li>Tesla factories</li>
+        <li>Hospitals and clinics</li>
+        <li>Jails and police stations</li>
+        <li>Banks and financial institutions</li>
+        <li>Schools and universities</li>
+    </ul>
+    <h3>The Embarrassing Truth:</h3>
+    <p><strong>Attack method:</strong> Hard-coded "Super Admin" credentials found <span class="highlight">publicly exposed online</span></p>
+    <p><strong>Access level:</strong> Complete access to all client camera feeds and archived footage</p>
+    <p class="warning"><strong>Lesson:</strong> A security company with poor security practices. Default/hard-coded credentials in production systems are inexcusable. Third-party cloud services need scrutiny.</p>
+</section>
+
+            <section>
+    <h2>⚰️ Tomb #5: LastPass via Plex (2022) 🎬</h2>
+    <h3>When Movie Night Compromises Your Password Vault</h3>
+    <div class="stats">
+        <div class="stat-box">
+            <div class="stat-number">3 Years</div>
+            <div>Unpatched Vulnerability</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">CVE-2020-5741</div>
+            <div>Plex Deserialization Bug</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">Corporate Vault</div>
+            <div>Data Stolen</div>
+        </div>
+    </div>
+    <h3>The Attack Chain:</h3>
+    <ul>
+        <li><strong>Target:</strong> Senior LastPass engineer's home computer</li>
+        <li><strong>Entry Point:</strong> Outdated Plex Media Server (streaming app)</li>
+        <li><strong>Exploit:</strong> 2020 vulnerability never patched by employee</li>
+        <li><strong>Payload:</strong> Keylogger installed to capture master password</li>
+        <li><strong>Impact:</strong> Access to LastPass corporate vault and cloud storage</li>
+    </ul>
+    <p class="warning"><strong>The Horror:</strong> A password manager company breached via an entertainment app. Home IoT devices can become corporate attack vectors for remote workers.</p>
+    <p class="highlight" style="font-size: 1.1em; margin-top: 20px;">Your home network security = your company's security in the remote work era</p>
+</section>
+
+            <section>
+    <h2>⚰️ Tomb #6: MGM & Caesars (2023) 🎰</h2>
+    <h3>When the Human is the Weakest Link</h3>
+    <div class="stats">
+        <div class="stat-box">
+            <div class="stat-number">2023</div>
+            <div>Both Breached</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">Vishing</div>
+            <div>Phone-Based Attack</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">$100M+</div>
+            <div>Estimated Losses</div>
+        </div>
+    </div>
+    <h3>MGM Resorts Attack:</h3>
+    <ul>
+        <li>Attackers <span class="highlight">impersonated an employee</span> via phone call</li>
+        <li>Tricked IT help-desk into resetting privileged account</li>
+        <li>Deployed ransomware across casino systems</li>
+        <li>Slot machines, room keys, and reservations down for days</li>
+    </ul>
+    <h3>Caesars Entertainment Attack:</h3>
+    <ul>
+        <li>Social engineering via <span class="highlight">outsourced IT support vendor</span></li>
+        <li>Reportedly paid ransom to prevent data leak</li>
+    </ul>
+    <p class="warning"><strong>Lesson:</strong> Third-party human factors (help-desk, contractors, call centers) are part of your attack surface. MFA isn't enough when attackers can just call your help desk.</p>
+</section>
+
+            <section>
+    <h2>🐺 The Werewolf Among Us: Default Passwords 🐺</h2>
+    <h3>Hiding in Plain Sight Until the Full Moon</h3>
+    <div class="list-grid">
+        <div>
+            <h3>The Curse of Default Credentials:</h3>
+            <ul>
+                <li><span class="highlight">admin/admin</span> - #1 default</li>
+                <li><span class="highlight">12345</span> - Simple defaults</li>
+                <li><span class="highlight">No password</span> - Auth disabled</li>
+                <li><span class="highlight">root/root</span> - Legacy systems</li>
+            </ul>
+        </div>
+        <div>
+            <h3>The Full Moon Transformation:</h3>
+            <ul>
+                <li>2016 Mirai Botnet</li>
+                <li>600,000+ devices compromised</li>
+                <li>Used only 60 default credentials</li>
+                <li>Massive DDoS attacks</li>
+            </ul>
+        </div>
+    </div>
+    <p class="warning" style="font-size: 1.2em; margin-top: 30px;"><strong>Your baby monitor could be part of a botnet right now, waiting for the full moon.</strong></p>
+</section>
+
+            <section>
+    <h2>👻 The Ghost from 1969: Telnet 👻</h2>
+    <h3>Haunting Your Network Since the Nixon Administration</h3>
+    <p><strong>What is Telnet (Port 23)?</strong></p>
+    <ul>
+        <li>A specter from <span class="highlight">1969</span></li>
+        <li>Everything transmitted in <span class="highlight">PLAIN TEXT</span></li>
+        <li>Passwords, commands, data - all visible to spirit realm</li>
+    </ul>
+    <h3>Why This Ghost Won't Die:</h3>
+    <ul>
+        <li>Legacy IoT devices keep it alive</li>
+        <li>Manufacturers summon it for "ease of setup"</li>
+        <li>Users don't know they're haunted</li>
+    </ul>
+    <div class="code-block">
+[SCAN] 192.168.0.105:23 OPEN<br>
+[INFO] Risk: 75% - CRITICAL: Telnet exposed<br>
+Device Type: Cursed IoT Device
+    </div>
+    <p class="warning"><strong>The Séance:</strong> Your neighbor's kid could summon your traffic with Wireshark</p>
+</section>
+
+            <section>
+    <h2>👁️ The All-Seeing Eye: Smart TVs 👁️</h2>
+    <h3>Big Brother is Watching... In 4K</h3>
+    <div class="list-grid">
+        <div>
+            <h3>What the Eye Sees:</h3>
+            <ul>
+                <li><strong>Smart TVs:</strong> Viewing habits, voice commands</li>
+                <li><strong>Cameras:</strong> Unencrypted video streams</li>
+                <li><strong>Smart Speakers:</strong> Always listening</li>
+                <li><strong>Thermostats:</strong> When you're home</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Tales of Terror:</h3>
+            <ul>
+                <li><strong>Vizio:</strong> $2.2M fine for tracking 11M TVs</li>
+                <li><strong>Ring:</strong> Hackers watching users</li>
+                <li><strong>Baby Monitors:</strong> Strangers talking to children</li>
+            </ul>
+        </div>
+    </div>
+    <p class="highlight" style="font-size: 1.3em; margin-top: 30px;">This data is sold, shared, and sometimes leaked to the highest bidder.</p>
+</section>
+
+            <section>
+    <h2>🧙 The Witch's Cauldron: Brewing Risk Scores 🧙</h2>
+    <h3>Concocting Your Network's Vulnerability Potion</h3>
+    <div class="code-block">
+Critical Services Found:<br>
+├─ Telnet (23): +30 points - Unencrypted remote access<br>
+├─ FTP (21): +20 points - Unencrypted file transfer<br>
+├─ RDP (3389): +15 points - Windows remote desktop<br>
+├─ SMB (445): +15 points - File sharing vulnerabilities<br>
+└─ Each additional port: +2 points<br>
+<br>
+<span class="highlight">Risk Score = (Points / Max Possible) × 100%</span>
+    </div>
+    <h3>Typical Home Network Spell Results:</h3>
+    <ul>
+        <li>12 devices scanned</li>
+        <li>3 devices with <span class="highlight">50%+ risk scores</span></li>
+        <li>2 devices with Telnet exposed (<span class="highlight">75%+ risk</span>)</li>
+        <li>1 device with Telnet AND FTP (<span class="highlight">90% risk</span>)</li>
+    </ul>
+    <p class="warning"><strong>Most home networks brew a 60-80% risk potion</strong></p>
+</section>
+
+            <section>
+    <h2>🧟 The Zombie Devices: The Undead Update Problem 🧟</h2>
+    <h3>Abandoned by Their Creators, Shambling Forward</h3>
+    <div class="stats">
+        <div class="stat-box">
+            <div class="stat-number">5-10 yrs</div>
+            <div>Zombie Lifespan</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">1-2 yrs</div>
+            <div>Before Abandonment</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">3-8 yrs</div>
+            <div>Walking Dead</div>
+        </div>
+    </div>
+    <h3>Why They Became Zombies:</h3>
+    <ul>
+        <li>No regulations requiring long-term support</li>
+        <li>Manufacturers move to next product</li>
+        <li>Update mechanisms often broken or infected</li>
+        <li>Users don't know they're living with the undead</li>
+    </ul>
+    <div class="code-block">
+[SCAN] 192.168.0.50:22 OPEN [SSH-2.0-OpenSSH_5.1]<br>
+<span class="highlight">Note: OpenSSH 5.1 from 2008, 47 known CVEs, ZOMBIE DETECTED</span>
+    </div>
+</section>
+
+            <section>
+    <h2>😈 The Demon's Grimoire: Network Mapping 😈</h2>
+    <h3>Inscribing Your Vulnerabilities in the Dark Book</h3>
+    <div class="code-block">
+IP: 192.168.0.105<br>
+Device Type: Windows PC<br>
+Open Ports: 135, 139, 445, 3389<br>
+<span class="highlight">Risk Score: 65%</span><br>
+Services: SMB, RDP (Remote Desktop)<br>
+Soul Status: VULNERABLE
+    </div>
+    <h3>What the Demon Learns:</h3>
+    <ul>
+        <li>Device types and operating systems</li>
+        <li>Vulnerable services running</li>
+        <li>Network topology and architecture</li>
+        <li>Attack surface mapping</li>
+        <li>Best targets for possession</li>
+    </ul>
+    <p class="warning"><strong>The Ritual:</strong> This reconnaissance happens silently, constantly, invisibly</p>
+</section>
+
+            <section>
+    <h2>🛡️ The Exorcism: Banishing the Demons 🛡️</h2>
+    <h3>Sacred Rituals to Protect Your Digital Soul</h3>
+    <div class="list-grid">
+        <div>
+            <h3>Immediate Rituals:</h3>
+            <ul style="font-size: 0.85em;">
+                <li><strong>Network Segmentation</strong> - Separate VLAN for IoT</li>
+                <li><strong>Change Defaults</strong> - Every single device</li>
+                <li><strong>Disable Services</strong> - Turn off Telnet, FTP, UPnP</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Ongoing Protection Spells:</h3>
+            <ul style="font-size: 0.85em;">
+                <li><strong>Update Firmware</strong> - Quarterly reminders</li>
+                <li><strong>Monitor Network</strong> - Know what's connected</li>
+                <li><strong>Replace Old Devices</strong> - If it can't update, replace it</li>
+            </ul>
+        </div>
+    </div>
+    <p class="highlight" style="font-size: 1.3em; margin-top: 30px;">The best defense is awareness. You can't protect what you don't know exists.</p>
+</section>
+
+            <section>
+    <h2>🧛 Did You Invite Vampires Into Your Home? 🧛</h2>
+    <h3>Common Smart Devices: Guests That Never Leave</h3>
+    <div class="device-grid">
+        <div class="device-item">
+            <div class="device-icon">📺</div>
+            <strong>Smart TVs</strong>
+            <p style="font-size: 0.85em;">Always watching what you watch</p>
+        </div>
+        <div class="device-item">
+            <div class="device-icon">🔊</div>
+            <strong>Smart Speakers</strong>
+            <p style="font-size: 0.85em;">Always listening</p>
+        </div>
+        <div class="device-item">
+            <div class="device-icon">📹</div>
+            <strong>Security Cameras</strong>
+            <p style="font-size: 0.85em;">Who's really watching?</p>
+        </div>
+        <div class="device-item">
+            <div class="device-icon">🌡️</div>
+            <strong>Smart Thermostats</strong>
+            <p style="font-size: 0.85em;">Knows when you're home</p>
+        </div>
+        <div class="device-item">
+            <div class="device-icon">🔌</div>
+            <strong>Smart Plugs</strong>
+            <p style="font-size: 0.85em;">Tracking every watt</p>
+        </div>
+        <div class="device-item">
+            <div class="device-icon">🚪</div>
+            <strong>Smart Locks</strong>
+            <p style="font-size: 0.85em;">Who has the keys?</p>
+        </div>
+        <div class="device-item">
+            <div class="device-icon">💡</div>
+            <strong>Smart Bulbs</strong>
+            <p style="font-size: 0.85em;">Map your daily routine</p>
+        </div>
+        <div class="device-item">
+            <div class="device-icon">🏠</div>
+            <strong>Smart Hubs</strong>
+            <p style="font-size: 0.85em;">Gateway to everything</p>
+        </div>
+        <div class="device-item">
+            <div class="device-icon">🤖</div>
+            <strong>Robot Vacuums</strong>
+            <p style="font-size: 0.85em;">Mapping your home layout</p>
+        </div>
+    </div>
+    <p class="warning" style="margin-top: 30px;"><strong>Like vampires, these devices need your permission to enter... but once invited, they're hard to get rid of.</strong></p>
+</section>
+
+            <section>
+    <h2>The $10 Surveillance Device <span class="skull">💀</span></h2>
+    <h3>What I Built in My Basement</h3>
+    <div class="stats">
+        <div class="stat-box">
+            <div class="stat-number">$8-12</div>
+            <div>ESP32 Cost</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">45s</div>
+            <div>Full Network Scan</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">24/7</div>
+            <div>Battery Operation</div>
+        </div>
+    </div>
+    <h3>Capabilities:</h3>
+    <ul>
+        <li>Scan entire network in under a minute</li>
+        <li>Identify every device type automatically</li>
+        <li>Find open ports and vulnerable services</li>
+        <li>Calculate risk scores in real-time</li>
+        <li>Operate autonomously for weeks</li>
+    </ul>
+    <p class="warning"><strong>The Nightmare:</strong> If I can build this for $10 with basic skills, what can sophisticated attackers do with unlimited resources?</p>
+</section>
+
+            <section>
+    <h2>Questions? 🎃</h2>
+    <h3>Want to Try This at Home? (Responsibly)</h3>
+    <div class="stats">
+        <div class="stat-box">
+            <div style="font-size: 3em;">📂</div>
+            <div>Full Code on GitHub</div>
+        </div>
+        <div class="stat-box">
+            <div style="font-size: 3em;">⚖️</div>
+            <div>Educational Use Only</div>
+        </div>
+        <div class="stat-box">
+            <div style="font-size: 3em;">🔒</div>
+            <div>Scan Only Your Network</div>
+        </div>
+    </div>
+    <h3 style="margin-top: 40px;">Additional Learning Resources:</h3>
+    <ul>
+        <li>OWASP IoT Top 10</li>
+        <li>/r/homelab and /r/netsec</li>
+        <li>Shodan.io - Search engine for IoT devices</li>
+        <li>Check local laws on network scanning</li>
+    </ul>
+    <p style="font-size: 1.5em; margin-top: 40px; text-align: center;">Thank you! Stay spooky, stay secure! 👻</p>
+</section>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.js"></script>
+    <script>
+// Initialize Reveal.js with 16:10 aspect ratio
+Reveal.initialize({
+    hash: true,
+    controls: true,
+    progress: true,
+    center: true,
+    transition: 'slide',
+    slideNumber: 'c/t',
+    width: 1920,
+    height: 1200,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2.0
+});
+
+// Scale control functionality
+const scaleSlider = document.getElementById('scaleSlider');
+const scaleValue = document.getElementById('scaleValue');
+
+scaleSlider.addEventListener('input', function() {
+    const scale = this.value / 100;
+    scaleValue.textContent = this.value + '%';
+    const margin = (1 - scale) / 2;
+    Reveal.configure({ margin: margin, maxScale: scale });
+});
+
+// Initialize with default value
+scaleSlider.dispatchEvent(new Event('input'));
+    </script>
+</body>
+</html>
