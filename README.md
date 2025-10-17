@@ -1,111 +1,95 @@
-# Spooky Scary Security Talk 🎃
+# ESP32 Port Scanner - IoT Security Presentation
 
-A Halloween-themed security presentation about IoT vulnerabilities.
+Interactive Reveal.js presentation demonstrating IoT security vulnerabilities and the ESP32 Port Scanner project.
 
-## Structure
+## 🌐 Live Demo
 
-This presentation is split into separate files to make editing easier and avoid overwhelming LLM context:
+**View the presentation**: https://sam-fakhreddine.github.io/esp32-port-scanner/
 
-```
-securityTalk/
-├── index.html          # Generated presentation (built from parts)
-├── build.py            # Build script to combine everything
-├── README.md           # This file
-├── css/
-│   └── style.css       # All custom styles
-├── js/
-│   └── app.js          # All custom JavaScript
-└── slides/
-    ├── 01-intro.html
-    ├── 02-vampires.html
-    ├── 03-werewolf.html
-    ├── 04-ghost.html
-    ├── 05-eye.html
-    ├── 06-zombie.html
-    ├── 07-demon.html
-    ├── 08-graveyard.html
-    ├── 08a-target.html
-    ├── 08b-casino.html
-    ├── 08c-pacemaker.html
-    ├── 08d-verkada.html
-    ├── 08e-lastpass.html
-    ├── 08f-mgm.html
-    ├── 09-witch.html
-    ├── 10-exorcism.html
-    ├── 11-questions.html
-    └── 12-esp32.html    # Demo slide (moved to end)
-```
+## 🎨 Features
 
-## Editing Slides
+- **16:10 Aspect Ratio** - Optimized for modern displays
+- **Haunted House Theme** - Dark, atmospheric design with IoT security horror stories
+- **18 Slides** - Covering real-world breaches, vulnerabilities, and live demo
+- **Interactive Controls** - Keyboard navigation, progress bar, slide numbers
+- **Responsive Design** - Works on desktop and mobile
 
-### To edit a single slide:
-1. Edit the corresponding file in `slides/` directory
-2. Run the build script: `python build.py`
-3. Open `index.html` in your browser
+## 🏗️ Building Locally
 
-### To edit styles:
-1. Edit `css/style.css`
-2. Run `python build.py`
-
-### To edit JavaScript:
-1. Edit `js/app.js`
-2. Run `python build.py`
-
-## Building
-
-To combine all files into `index.html`:
+The presentation is built from modular slide files:
 
 ```bash
-python build.py
+cd presentation
+python3 build.py
 ```
 
-This will:
-- Read all slide files from `slides/` directory (in alphabetical order)
-- Embed the CSS from `css/style.css`
-- Embed the JavaScript from `js/app.js`
-- Create a complete `index.html` file
+This generates `index.html` from:
+- `slides/*.html` - Individual slide content
+- `css/style.css` - Styling and theme
+- `js/app.js` - Reveal.js configuration
 
-## Viewing
+## 📂 Structure
 
-Just open `index.html` in a web browser. The presentation uses Reveal.js loaded from CDN.
+```
+presentation/
+├── index.html              # Built presentation (auto-generated)
+├── build.py                # Build script
+├── haunted-house-iot.png   # Background image
+├── css/
+│   └── style.css          # Theme and styling
+├── js/
+│   └── app.js             # Reveal.js config
+└── slides/
+    ├── 01-intro.html
+    ├── 02-graveyard.html
+    ├── 03a-target.html
+    └── ...                # 18 total slides
+```
 
-## Slide Order
+## 🎯 Slide Order
 
-1. Intro
-2. Vampires (Smart Devices)
-3. Werewolf (Default Passwords)
-4. Ghost (Telnet)
-5. All-Seeing Eye (Smart TVs)
-6. Zombie (Update Problem)
-7. Demon (Network Mapping)
-8. Graveyard (Overview)
-   - 8a: Target
-   - 8b: Casino
-   - 8c: Pacemakers
-   - 8d: Verkada
-   - 8e: LastPass
-   - 8f: MGM/Caesars
-9. Witch (Risk Scoring)
-10. Exorcism (Protection)
-11. Questions
-12. **ESP32 Demo** ← Moved to end for live demo
+1. **Introduction** - Hook and overview
+2. **Graveyard** - Real-world breach overview
+3. **Breach Stories** - Target, Casino, Pacemakers, Verkada, LastPass, MGM
+4. **Threat Concepts** - Werewolf, Ghost, Eye, Zombie, Demon
+5. **Vampires** - "Did you invite them into your home?" (pivot point)
+6. **Risk Scoring** - Witch slide
+7. **Protection** - Exorcism (how to secure)
+8. **Live Demo** - ESP32 device (finale)
+9. **Q&A** - Questions
 
-## Why This Structure?
+## 🎨 Customization
 
-- **Small files**: Each slide is ~20-50 lines instead of one 1000+ line file
-- **Easy editing**: Edit just one slide without scrolling through everything
-- **LLM-friendly**: Smaller context windows for AI assistants
-- **Version control**: Easier to see what changed in git diffs
-- **Modular**: Reuse slides in different presentations
+Edit `css/style.css` to change:
+- Colors and theme
+- Font sizes
+- Spacing and layout
+- Background opacity
 
-## Requirements
+Edit `js/app.js` to change:
+- Aspect ratio
+- Transitions
+- Controls behavior
 
-- Python 3.6+ (for build script)
-- Modern web browser (for viewing)
-- Internet connection (for Reveal.js CDN)
+## 📝 Adding Slides
 
-## Tips
+1. Create new HTML file in `slides/` with numeric prefix (e.g., `16-newslide.html`)
+2. Run `python3 build.py`
+3. Slides are automatically sorted and included
 
-- Run `python build.py` after ANY changes to see them in the browser
-- Slides are loaded alphabetically, so the naming (01, 02, 08a, etc.) matters
-- The build script is simple - feel free to customize it!
+## 🚀 Deployment
+
+The presentation is automatically deployed to GitHub Pages from the `presentation/` directory.
+
+**Live URL**: https://sam-fakhreddine.github.io/esp32-port-scanner/
+
+## 📖 Technologies
+
+- **Reveal.js 4.6.1** - Presentation framework
+- **Custom CSS** - Haunted house theme
+- **Vanilla JavaScript** - No build dependencies
+- **Python** - Build script for modular slides
+
+## ⚠️ Educational Use
+
+This presentation is designed for security awareness and education. Use responsibly and ethically.
