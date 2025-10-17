@@ -4,6 +4,11 @@
 
 Professional network port scanner for ESP32 with advanced security intelligence, device fingerprinting, and risk assessment capabilities.
 
+## 🔗 Links
+
+- **GitHub Repository**: https://github.com/sam-fakhreddine/esp32-port-scanner
+- **Live Presentation**: https://sam-fakhreddine.github.io/esp32-port-scanner/
+
 ## 🚨 Security Research Purpose
 
 This tool demonstrates how easily IoT devices can:
@@ -316,9 +321,16 @@ This tool is provided for educational and authorized security testing purposes o
 ## 📧 Support
 
 For issues or questions:
+- Open an issue on [GitHub](https://github.com/sam-fakhreddine/esp32-port-scanner/issues)
 - Check Serial Monitor output (115200 baud)
 - Review Arduino IDE compilation errors
 - Verify network connectivity and permissions
+
+## 🎤 Presentation
+
+View the interactive presentation about IoT security vulnerabilities:
+- **Live Demo**: https://sam-fakhreddine.github.io/esp32-port-scanner/
+- **Source**: `presentation/` directory
 
 ---
 
