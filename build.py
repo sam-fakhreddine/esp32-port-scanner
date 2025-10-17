@@ -9,34 +9,37 @@ from pathlib import Path
 
 # Get the directory where this script is located
 SCRIPT_DIR = Path(__file__).parent
-SLIDES_DIR = SCRIPT_DIR / 'slides'
-CSS_FILE = SCRIPT_DIR / 'css' / 'style.css'
-JS_FILE = SCRIPT_DIR / 'js' / 'app.js'
-OUTPUT_FILE = SCRIPT_DIR / 'index.html'
+SLIDES_DIR = SCRIPT_DIR / "slides"
+CSS_FILE = SCRIPT_DIR / "css" / "style.css"
+JS_FILE = SCRIPT_DIR / "js" / "app.js"
+OUTPUT_FILE = SCRIPT_DIR / "index.html"
+
 
 def read_file(filepath):
     """Read and return file contents"""
-    with open(filepath, 'r', encoding='utf-8') as f:
+    with open(filepath, "r", encoding="utf-8") as f:
         return f.read()
+
 
 def get_all_slides():
     """Get all slide files in order"""
-    slide_files = sorted(SLIDES_DIR.glob('*.html'))
+    slide_files = sorted(SLIDES_DIR.glob("*.html"))
     slides_content = []
-    
+
     for slide_file in slide_files:
         content = read_file(slide_file)
         slides_content.append(content)
-    
-    return '\n\n            '.join(slides_content)
+
+    return "\n\n            ".join(slides_content)
+
 
 def build_html():
     """Build the complete index.html file"""
     css_content = read_file(CSS_FILE)
     js_content = read_file(JS_FILE)
     slides_content = get_all_slides()
-    
-    html_template = f'''<!DOCTYPE html>
+
+    html_template = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -67,13 +70,14 @@ def build_html():
 {js_content}
     </script>
 </body>
-</html>'''
-    
-    with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
+</html>"""
+
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write(html_template)
-    
+
     print(f"✅ Built {OUTPUT_FILE}")
     print(f"   - Included {len(list(SLIDES_DIR.glob('*.html')))} slides")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     build_html()
